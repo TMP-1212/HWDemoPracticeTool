@@ -152,7 +152,7 @@ function Update()
 				}
 				break;
 			case state.RESULT:
-				if(keysPressed["r"])
+				if(keysPressed["r"] || keysPressed["R"])
 				{
 					gameState = state.WAITING;
 				}
