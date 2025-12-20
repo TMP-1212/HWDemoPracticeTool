@@ -79,12 +79,20 @@ window.addEventListener('keydown', function(event)
 
 window.addEventListener("keydown", (event) =>
 {
-	keysPressed[event.key] = true;
+	keysPressed[event.code] = true;
 });
 
 window.addEventListener("keyup", (event) =>
 {
-	keysPressed[event.key] = false;
+	keysPressed[event.code] = false;
+});
+
+window.addEventListener("blur", () =>
+{
+	for (const k in keysPressed)
+	{
+		keysPressed[k] = false;
+	}
 });
 
 canvas.addEventListener("click", () =>
@@ -152,7 +160,7 @@ function Update()
 				}
 				break;
 			case state.RESULT:
-				if(keysPressed["r"] || keysPressed["R"])
+				if(keysPressed["KeyR"])
 				{
 					gameState = state.WAITING;
 				}
@@ -330,19 +338,19 @@ function GetInput()
 	{
 		input[3] = 1;
 	}
-	if(keysPressed[" "])
+	if(keysPressed["Space"])
 	{
 		input[4] = 1;
 	}
-	if(keysPressed["Shift"])
+	if(keysPressed["ShiftLeft"] || keysPressed["ShiftRight"])
 	{
 		input[5] = 1;
 	}
-	if(keysPressed["Control"])
+	if(keysPressed["ControlLeft"] || keysPressed["ControlRight"])
 	{
 		input[6] = 1;
 	}
-	if(keysPressed["z"] || keysPressed["Z"])
+	if(keysPressed["KeyZ"])
 	{
 		input[7] = 1;
 	}
@@ -432,4 +440,3 @@ function CompareArrays(arr1, arr2)
 	}
 	return true;
 }
-
