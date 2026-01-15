@@ -2,10 +2,9 @@ const canvas = document.querySelector('canvas');
 const canvasContext = canvas.getContext('2d');
 const displayRestartCheckbox = document.getElementById('displayRestartCheckbox');
 const displayInputFeedbackCheckbox = document.getElementById('displayInputFeedbackCheckbox');
-const frames = 204;
-const totalImages = frames + 8;
+const keyboardImageAmount = 8;
 const keysPressed = {};
-const correctInputs =
+const dotdInputs =
 [[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0]
 ,[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0]
 ,[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0]
@@ -15,18 +14,18 @@ const correctInputs =
 ,[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0]
 ,[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0]
 ,[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0]
-,[1,0,1,0,0,1,0,0],[1,0,1,0,0,0,0,1],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0]
+,[1,0,1,0,0,1,0,0],[1,0,1,0,0,1,0,0],[1,0,1,0,0,0,0,1],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0]
 ,[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0]
 ,[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0]
 ,[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0]
 ,[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0]
-,[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0]
+,[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,0,0,0,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0]
 ,[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0]
+,[0,0,1,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0]
 ,[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0]
 ,[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0]
-,[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0]
-,[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
-,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0]
+,[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[0,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[0,0,0,0,1,0,1,0]
 ,[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0]
 ,[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0]
 ,[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0]
@@ -38,14 +37,80 @@ const correctInputs =
 ,[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0]
 ,[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0]
 ,[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0]
-,[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0]
-,[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0]];
+,[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,1,0,1,0,0,0]
+,[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0],[0,0,1,0,1,0,0,0]];
+const smfInputs =
+[[1,0,1,0,0,0,0,0],[1,0,1,0,0,0,0,0],[1,0,1,0,0,0,0,0],[1,0,1,0,0,0,0,0],[1,0,1,0,0,0,0,0],[1,0,1,0,0,0,0,0]
+,[1,0,1,0,1,0,0,0],[1,0,1,0,0,0,0,0],[1,0,1,0,0,0,0,0],[1,0,1,0,0,0,0,0],[1,0,1,0,0,0,0,1],[0,0,1,0,0,0,0,0]
+,[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0]
+,[1,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0],[1,0,0,0,0,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0],[1,0,0,0,1,0,0,0]
+,[1,0,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0]
+,[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,1,0,0,1,0,0,0],[0,0,0,0,1,0,1,0]
+,[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0]
+,[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0]
+,[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0]
+,[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0]
+,[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0],[0,0,0,0,1,0,1,0]
+,[0,0,0,0,1,0,1,0]];
 const state = Object.freeze({
-    RUNNING: 0,
-    RESULT: 1,
-    WAITING: 2
+	RUNNING: 0,
+	RESULT: 1,
+	WAITING: 2,
+	LOADING: 3
 });
+const level = Object.freeze({
+	DOTD: 0,
+	SMF: 1
+});
+let currentLevel = null;
 let gameState = state.WAITING;
+let frames = 0;
 let fps = 30;
 let frameLength = 1000 / fps;
 let lastTickTime = Date.now();
@@ -53,11 +118,16 @@ let currentTime = Date.now();
 let currentFrame = 1;
 let levelImages = {};
 let keyboardImages = {};
+let totalImages = 0;
 let imagesLoaded = 0;
 let saveState = 1;
 let displayRestartMessage = true;
 let displayInput = true;
-let lastInput = [0,0,0,0,0,0,0,0]
+let comparisonInputs = null;
+let lastInput = [0,0,0,0,0,0,0,0];
+let ejectFrame = null;
+let totalLoadTime = 0;
+let remainingLoadTime = 0;
 
 // prevents keyboard from scrolling
 window.addEventListener('keydown', function(event)
@@ -118,8 +188,6 @@ displayInputFeedbackCheckbox.addEventListener('change', function()
 	displayInput = displayInputFeedbackCheckbox.checked;
 });
 
-StartGame();
-
 function GameLoop()
 {
 	currentTime = Date.now();
@@ -148,8 +216,8 @@ function Update()
 					gameState = state.RESULT;
 					break;
 				}
-				lastInput = actualInput;
-				if(!CompareArrays(fixedInput, correctInputs[currentFrame - 1]))
+				lastInput = actualInput.slice();
+				if(!CompareArrays(fixedInput, comparisonInputs[currentFrame]))
 				{
 					gameState = state.RESULT;
 					break;
@@ -162,25 +230,49 @@ function Update()
 			case state.RESULT:
 				if(keysPressed["KeyR"])
 				{
-					gameState = state.WAITING;
+					currentFrame = saveState;
+					if(totalLoadTime > 0)
+					{
+						remainingLoadTime = totalLoadTime;
+						gameState = state.LOADING;
+					}
+					else
+					{
+						gameState = state.WAITING;
+					}
 				}
 				break;
 			case state.WAITING:
-				currentFrame = saveState;
-				if(CompareArrays(fixedInput, correctInputs[currentFrame - 1]))
-				{					
+				if(CompareArrays(fixedInput, comparisonInputs[currentFrame]))
+				{
+					gameState = state.RUNNING;
+				}
+				break;
+			case state.LOADING:
+				remainingLoadTime--;
+				if(remainingLoadTime < 1)
+				{
 					gameState = state.RUNNING;
 				}
 				break;
 			default:
 				console.log('gameState error');
-		}			
+		}
 	}
 }
 
 function Draw()
 {
-	DrawImage(canvas, canvasContext, levelImages[currentFrame], 0, 0);	
+	if(gameState == state.LOADING)
+	{
+		canvasContext.globalAlpha = 1;
+		canvasContext.fillStyle = "#3d88c7";
+		canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+	}
+	else
+	{
+		DrawImage(canvas, canvasContext, levelImages[currentFrame], 0, 0);
+	}
 	if(document.activeElement !== canvas)
 	{
 		DrawText(canvas, canvasContext, 'Simulation paused - Click to resume', canvas.width/2, canvas.height/2);
@@ -212,17 +304,68 @@ function Draw()
 	}
 }
 
+function ChooseLevel()
+{
+	currentLevel = level[document.getElementById("chosenLevel").value];
+	switch(currentLevel)
+	{
+		case level.DOTD:
+			frames = 204;
+			comparisonInputs = dotdInputs.slice();
+			ejectFrame = 56;
+			dotdPreMadeStates = ["Shift to Z swap: 1", "Grab and Up release: 57", "Left and Ctrl press: 97", "Ctrl release: 150"];
+			dotdPreMadeStates.forEach((state) =>
+			{
+				let li = document.createElement("li");
+				li.textContent = state;
+				document.getElementById("preMadeSaveStates").appendChild(li);
+			});
+			break;
+		case level.SMF:
+			frames = 343;
+			comparisonInputs = smfInputs.slice();
+			ejectFrame = 10;
+			smfPreMadeStates = ["First four: 1", "Grab: 14", "Left to Right swap: 100", "Ctrl press: 270"];
+			smfPreMadeStates.forEach((state) =>
+			{
+				let li = document.createElement("li");
+				li.textContent = state;
+				document.getElementById("preMadeSaveStates").appendChild(li);
+			});
+			break;
+		default:
+			console.log('chosen level error');
+	}
+	totalImages = keyboardImageAmount + frames;
+	document.getElementById("saveStateExplenation").textContent = `(The frame to start from. Minimum is 1 and maximum is ${frames}.)`
+	document.getElementById("levelSelect").remove();
+	let loadingText = document.createElement("p");
+	loadingText.className = "loadingText";
+	loadingText.id = "loadingText";
+	loadingText.textContent = "Loading... (0%)";
+	document.body.insertBefore(loadingText, document.body.firstChild);
+}
+
 function StartGame()
 {
 	let levelImagePaths = [];
 	for(let i = 1; i <= frames; i++)
 	{
-		levelImagePaths.push(`level_images/${i}.png`);
+		switch(currentLevel)
+		{
+			case level.DOTD:
+				levelImagePaths.push(`dotd_images/${i}.png`);
+				break;
+			case level.SMF:
+				levelImagePaths.push(`smf_images/${i}.png`);
+				break;
+			default:
+				console.log('chosen level error');
+		}
 	}
 	let keyboardImagePaths =
 	["keyboard_images/Left.png", "keyboard_images/Right.png", "keyboard_images/Up.png", "keyboard_images/Down.png"
 	, "keyboard_images/Space.png", "keyboard_images/Shift.png", "keyboard_images/Ctrl.png", "keyboard_images/Z.png"];
-	
 	Promise.all([
 	PreloadImages(levelImagePaths),
 	PreloadImages(keyboardImagePaths)
@@ -268,14 +411,14 @@ function DrawPlayerInput(canvas, canvasContext)
 
 function DrawCorrectInput(canvas, canvasContext)
 {
-	DrawImage(canvas, canvasContext, keyboardImages[5], canvas.width * 0.624, canvas.height * 0.0143, 0.5, (correctInputs[currentFrame - 1][5]) ? 1 : 0.4);
-	DrawImage(canvas, canvasContext, keyboardImages[7], canvas.width * 0.702, canvas.height * 0.0143, 0.5, (correctInputs[currentFrame - 1][7]) ? 1 : 0.4);
-	DrawImage(canvas, canvasContext, keyboardImages[2], canvas.width * 0.938, canvas.height * 0.0143, 0.5, (correctInputs[currentFrame - 1][2]) ? 1 : 0.4);
-	DrawImage(canvas, canvasContext, keyboardImages[6], canvas.width * 0.624, canvas.height * 0.0578, 0.5, (correctInputs[currentFrame - 1][6]) ? 1 : 0.4);
-	DrawImage(canvas, canvasContext, keyboardImages[4], canvas.width * 0.756, canvas.height * 0.0578, 0.5, (correctInputs[currentFrame - 1][4]) ? 1 : 0.4);
-	DrawImage(canvas, canvasContext, keyboardImages[0], canvas.width * 0.908, canvas.height * 0.0578, 0.5, (correctInputs[currentFrame - 1][0]) ? 1 : 0.4);
-	DrawImage(canvas, canvasContext, keyboardImages[3], canvas.width * 0.938, canvas.height * 0.0578, 0.5, (correctInputs[currentFrame - 1][3]) ? 1 : 0.4);
-	DrawImage(canvas, canvasContext, keyboardImages[1], canvas.width * 0.967, canvas.height * 0.0578, 0.5, (correctInputs[currentFrame - 1][1]) ? 1 : 0.4);
+	DrawImage(canvas, canvasContext, keyboardImages[5], canvas.width * 0.624, canvas.height * 0.0143, 0.5, (comparisonInputs[currentFrame][5]) ? 1 : 0.4);
+	DrawImage(canvas, canvasContext, keyboardImages[7], canvas.width * 0.702, canvas.height * 0.0143, 0.5, (comparisonInputs[currentFrame][7]) ? 1 : 0.4);
+	DrawImage(canvas, canvasContext, keyboardImages[2], canvas.width * 0.938, canvas.height * 0.0143, 0.5, (comparisonInputs[currentFrame][2]) ? 1 : 0.4);
+	DrawImage(canvas, canvasContext, keyboardImages[6], canvas.width * 0.624, canvas.height * 0.0578, 0.5, (comparisonInputs[currentFrame][6]) ? 1 : 0.4);
+	DrawImage(canvas, canvasContext, keyboardImages[4], canvas.width * 0.756, canvas.height * 0.0578, 0.5, (comparisonInputs[currentFrame][4]) ? 1 : 0.4);
+	DrawImage(canvas, canvasContext, keyboardImages[0], canvas.width * 0.908, canvas.height * 0.0578, 0.5, (comparisonInputs[currentFrame][0]) ? 1 : 0.4);
+	DrawImage(canvas, canvasContext, keyboardImages[3], canvas.width * 0.938, canvas.height * 0.0578, 0.5, (comparisonInputs[currentFrame][3]) ? 1 : 0.4);
+	DrawImage(canvas, canvasContext, keyboardImages[1], canvas.width * 0.967, canvas.height * 0.0578, 0.5, (comparisonInputs[currentFrame][1]) ? 1 : 0.4);
 }
 
 function FixInput(input)
@@ -296,7 +439,7 @@ function FixInput(input)
 		newInput[3] = 0;
 	}
 	// if ejected from segway
-	if(currentFrame > 56)
+	if(ejectFrame != null && currentFrame > ejectFrame)
 	{
 		//pressing z no longer matters
 		newInput[7] = 0;
@@ -306,6 +449,14 @@ function FixInput(input)
 			newInput[0] = 0;
 			newInput[1] = 0;
 		}
+		//pressing shift overrides arrow keys
+		if(newInput[5])
+		{
+			newInput[0] = 0;
+			newInput[1] = 0;
+			newInput[2] = 0;
+			newInput[3] = 0;
+		}
 		// pressing ctrl overrides arrow keys and shift
 		if(newInput[6])
 		{
@@ -314,6 +465,14 @@ function FixInput(input)
 			newInput[2] = 0;
 			newInput[3] = 0;
 			newInput[5] = 0;
+		}
+	}
+	if(currentLevel == level.SMF)
+	{
+		// pressing space during these frames doesn't matter
+		if(currentFrame > 6 && currentFrame < 22)
+		{
+			newInput[4] = 0;
 		}
 	}
 	return newInput;
@@ -360,7 +519,7 @@ function GetInput()
 function LoadSaveState()
 {
 	let frame = parseInt(document.getElementById("saveState").value, 10);
-	if(Number.isInteger(frame) && frame > 0 && frame <= frames)
+	if(Number.isInteger(frame) && frame > 0 && frame <= frames && currentLevel != null)
 	{
 		saveState = frame;
 		currentFrame = saveState;
@@ -375,6 +534,15 @@ function SetFramerate()
 	{
 	fps = newFps;
 	frameLength = 1000 / fps;
+	}
+}
+
+function SetLoadTime()
+{
+	let newLoadTime = parseInt(document.getElementById("loadTime").value, 10);
+	if(Number.isInteger(newLoadTime) && newLoadTime >= 0)
+	{
+	totalLoadTime = newLoadTime;
 	}
 }
 

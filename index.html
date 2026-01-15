@@ -4,30 +4,42 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<p class="loadingText" id="loadingText">Loading... (0%)</p>
+	<div id="levelSelect">
+		<form class="levelSelectSize">
+			<p>Level:</p>
+			<select class="noOutline" id="chosenLevel">
+				<option class="bigText">DOTD</option>
+				<option class="bigText">SMF</option>
+			</select>
+			<button type="button" onclick="ChooseLevel(); StartGame();"></button>
+		</form>
+	</div>
 	<canvas class="noOutline"></canvas>
 	<div>
 		<p>Save state:</p>
-		<input type="text" id="saveState">
-		<button onclick="LoadSaveState()"></button>
+		<input type="text" class="noOutline" id="saveState">
+		<button onclick="LoadSaveState();"></button>
 		<p class="smallText hoverReveal">(?)</p>
-		<p class="smallText hidden">(The frame to start from. Minimum is 1 and maximum is 204.)</p>
+		<p class="smallText hidden" id="saveStateExplenation">(The frame to start from.)</p>
 	</div>
 	<details class="smallText">
 		<summary class="noOutline">Pre-made Save states</summary>
-		<ul>
-			<li>Shift to Z swap: 1</li>
-			<li>Grab and Up release: 57</li>
-			<li>Left and Ctrl press: 97</li>
-			<li>Ctrl release: 150</li>
+		<ul id="preMadeSaveStates">
 		</ul>
 	</details>
 	<div>
 		<p>Framerate:</p>
-		<input type="text" id="framerate">
-		<button onclick="SetFramerate()"></button>
+		<input type="text" class="noOutline" id="framerate">
+		<button onclick="SetFramerate();"></button>
 		<p class="smallText hoverReveal">(?)</p>
 		<p class="smallText hidden">(Minimum is 1, maximum is 60, default is 30. If you set the framerate to 1, you may need to hold the buttons for a full second before they register.)</p>
+	</div>
+	<div>
+		<p>Load Time:</p>
+		<input type="text" class="noOutline" id="loadTime">
+		<button onclick="SetLoadTime();"></button>
+		<p class="smallText hoverReveal">(?)</p>
+		<p class="smallText hidden">(The number of frames to simulate load times with. A load time of 0 frames will wait for your input before starting. The default load time is 0 frames.)</p>
 	</div>
 	<div>
 	<input type="checkbox" id="displayRestartCheckbox" checked>
@@ -43,14 +55,14 @@
 	</div>
 	<fieldset>
 		<legend class="bigText">What is this?</legend>
-		<p class="smallText">This is a practice tool that simulates the Button Launch strategy in the Happy Wheels level "Dawn of the Dead.lv1". It was built from 204 screenshots of the level being played in the flash demo of the real game. This tool allows for better practice through its added features that aren't available in the real game. These features include save states for retrying specific scenarios instantly, custom framerate for slowing down or speeding up the simulation, pausing on failed inputs to see exactly what frame the error occurred on, and input feedback to see what caused the error.</p>
+		<p class="smallText">This is a practice tool that simulates frame perfect strategies from certain levels in the Happy Wheels demo. The graphics are built from hundreds of screenshots of the levels being played in the flash demo of the real game. This tool allows for better practice through its added features that aren't available in the real game. These features include save states for retrying specific scenarios instantly, custom framerate for slowing down or speeding up the simulation, pausing on failed inputs to see exactly what frame the error occurred on, and input feedback to see what caused the error.</p>
 	</fieldset>
 	<fieldset>
 		<legend class="bigText">Resources</legend>
 		<p class="smallText">Play the official game here: <a href="https://totaljerkface.com/happy_wheels.tjf" target="_blank">totaljerkface.com/happy_wheels.tjf</a></p>
 		<p class="smallText">Button Launch demonstration: <a href="https://youtu.be/rIYXZWZQOKM" target="_blank">youtu.be/rIYXZWZQOKM</a></p>
-		<p class="smallText">GitHub repository: <a href="https://github.com/TMP-1212/ButtonLaunchPracticeTool" target="_blank">https://github.com/TMP-1212/ButtonLaunchPracticeTool</a></p>
-		<p class="smallText">For bugs/problems/feature requests/anything regarding this website, you can DM me on discord: @tmp1212</p>		
+		<p class="smallText">SMF Skip demonstration: <a href="https://youtu.be/YCOMSjDhDiw" target="_blank">youtu.be/YCOMSjDhDiw</a></p>
+		<p class="smallText">For bugs/problems/feature requests/anything regarding this website, you can DM me on discord: @tmp1212</p>
 	</fieldset>
 	<fieldset>
 		<legend class="bigText">Disclaimer</legend>

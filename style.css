@@ -1,10 +1,10 @@
 canvas
 {
-    margin: auto;
-    display: block;
+	margin: auto;
+	display: block;
 }
 
-div
+div, form
 {
 	display: flex;
 	align-items: center;
@@ -14,6 +14,28 @@ div
 p
 {
 	font-size: 1.1vw;
+}
+
+input
+{
+	width: 2vw;
+	height: 1vh;
+	font-size: min(1vw, 1vh);
+}
+
+button
+{
+	width: min(2vw, 2vh);
+	height: min(2vw, 2vh);
+}
+
+select
+{
+	appearance: none;
+	padding: 2px;
+	width: 3vw;
+	height: 2vh;
+	font-size: min(1vw, 1vh);
 }
 
 .smallText
@@ -36,6 +58,12 @@ p
 	font-size: 8vw;
 }
 
+.levelSelectSize
+{
+	transform: scale(4);
+	transform-origin: top left;
+}
+
 .hoverReveal:hover + .hidden
 {
 	display: block;
@@ -44,19 +72,6 @@ p
 .hidden
 {
 	display: none;
-}
-
-input
-{
-	width: 2vw;
-	height: 1vh;
-	font-size: min(1vw, 1vh);
-}
-
-button
-{
-	width: min(2vw, 2vh);
-	height: min(2vw, 2vh);
 }
 
 .noOutline
