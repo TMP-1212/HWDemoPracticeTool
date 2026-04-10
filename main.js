@@ -125,6 +125,7 @@ let saveState = 1;
 let displayRestartMessage = true;
 let displayInput = true;
 let changeLoadTimeWithFps = false;
+let hideLevelDuringResult = false;
 let comparisonInputs = null;
 let lastInput = [0,0,0,0,0,0,0,0];
 let ejectFrame = null;
@@ -195,6 +196,11 @@ changeLoadTimeWithFpsCheckbox.addEventListener('change', function()
 	changeLoadTimeWithFps = changeLoadTimeWithFpsCheckbox.checked;
 });
 
+hideLevelDuringResultCheckbox.addEventListener('change', function()
+{
+	hideLevelDuringResult = hideLevelDuringResultCheckbox.checked;
+});
+
 
 function GameLoop()
 {
@@ -219,11 +225,6 @@ function Update()
 		switch(gameState)
 		{
 			case state.RUNNING:
-				if(currentFrame >= frames)
-				{					
-					gameState = state.RESULT;
-					break;
-				}
 				lastInput = actualInput.slice();
 				if(!CompareArrays(fixedInput, comparisonInputs[currentFrame]))
 				{
@@ -233,6 +234,11 @@ function Update()
 				if(currentFrame < frames)
 				{
 					currentFrame++;
+				}
+				if(currentFrame >= frames)
+				{					
+					gameState = state.RESULT;
+					break;
 				}
 				break;
 			case state.RESULT:
@@ -284,7 +290,7 @@ function Update()
 
 function Draw()
 {
-	if(gameState == state.LOADING)
+	if(gameState == state.LOADING || hideLevelDuringResult && gameState == state.RESULT)
 	{
 		canvasContext.globalAlpha = 1;
 		canvasContext.fillStyle = "#3d88c7";
@@ -312,7 +318,14 @@ function Draw()
 		{
 			if(displayRestartMessage)
 			{
-				DrawText(canvas, canvasContext, 'Failed input on this frame - Press R to restart', canvas.width/2, canvas.height/1.1);
+				if(hideLevelDuringResult)
+				{
+					DrawText(canvas, canvasContext, 'Failed input - Press R to restart', canvas.width/2, canvas.height/1.1);
+				}
+				else
+				{
+					DrawText(canvas, canvasContext, 'Failed input on this frame - Press R to restart', canvas.width/2, canvas.height/1.1);
+				}
 			}			
 			if(displayInput)
 			{
