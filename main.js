@@ -2,6 +2,7 @@ const canvas = document.querySelector('canvas');
 const canvasContext = canvas.getContext('2d');
 const displayRestartCheckbox = document.getElementById('displayRestartCheckbox');
 const displayInputFeedbackCheckbox = document.getElementById('displayInputFeedbackCheckbox');
+const defaultFps = 30;
 const keyboardImageAmount = 8;
 const keysPressed = {};
 const dotdInputs =
@@ -111,7 +112,7 @@ const level = Object.freeze({
 let currentLevel = null;
 let gameState = state.WAITING;
 let frames = 0;
-let fps = 30;
+let fps = defaultFps;
 let frameLength = 1000 / fps;
 let lastTickTime = Date.now();
 let currentTime = Date.now();
@@ -123,33 +124,34 @@ let imagesLoaded = 0;
 let saveState = 1;
 let displayRestartMessage = true;
 let displayInput = true;
+let changeLoadTimeWithFps = false;
 let comparisonInputs = null;
 let lastInput = [0,0,0,0,0,0,0,0];
 let ejectFrame = null;
 let totalLoadTime = 0;
 let remainingLoadTime = 0;
-
-// prevents keyboard from scrolling
-window.addEventListener('keydown', function(event)
-{
-	if(event.key === " " || event.key === "ArrowUp" || event.key === "ArrowDown" || event.key === "ArrowLeft" || 	event.key === "ArrowRight")
-	{
-		event.preventDefault();
-	}
-});
-
-// prevents ctrl + r from refreshing
-window.addEventListener('keydown', function(event)
-{
-	if((event.key === "r" || event.key === "R") && event.ctrlKey)
-	{
-		event.preventDefault();
-	}
-});
+let restartPressed = false;
 
 window.addEventListener("keydown", (event) =>
 {
 	keysPressed[event.code] = true;
+	if(event.code === "KeyR")
+	{
+		if(document.activeElement === canvas && gameState == state.RESULT && !event.repeat)
+		{
+			restartPressed = true;
+		}
+		// prevents ctrl + r from refreshing
+		if(event.ctrlKey)
+		{
+			event.preventDefault();
+		}
+	}
+	// prevents keyboard from scrolling
+	if(event.code === "Space" || event.code === "ArrowUp" || event.code === "ArrowDown" || event.code === "ArrowLeft" || 	event.code === "ArrowRight")
+	{
+		event.preventDefault();
+	}
 });
 
 window.addEventListener("keyup", (event) =>
@@ -159,7 +161,7 @@ window.addEventListener("keyup", (event) =>
 
 window.addEventListener("blur", () =>
 {
-	for (const k in keysPressed)
+	for(const k in keysPressed)
 	{
 		keysPressed[k] = false;
 	}
@@ -187,6 +189,12 @@ displayInputFeedbackCheckbox.addEventListener('change', function()
 {
 	displayInput = displayInputFeedbackCheckbox.checked;
 });
+
+changeLoadTimeWithFpsCheckbox.addEventListener('change', function()
+{
+	changeLoadTimeWithFps = changeLoadTimeWithFpsCheckbox.checked;
+});
+
 
 function GameLoop()
 {
@@ -228,12 +236,17 @@ function Update()
 				}
 				break;
 			case state.RESULT:
-				if(keysPressed["KeyR"])
+				if(restartPressed)
 				{
+					restartPressed = false;
 					currentFrame = saveState;
 					if(totalLoadTime > 0)
 					{
 						remainingLoadTime = totalLoadTime;
+						if(!changeLoadTimeWithFps)
+						{
+							SetFramerate(defaultFps);
+						}
 						gameState = state.LOADING;
 					}
 					else
@@ -246,12 +259,20 @@ function Update()
 				if(CompareArrays(fixedInput, comparisonInputs[currentFrame]))
 				{
 					gameState = state.RUNNING;
+					if(currentFrame < frames)
+					{
+						currentFrame++;
+					}
 				}
 				break;
 			case state.LOADING:
 				remainingLoadTime--;
 				if(remainingLoadTime < 1)
 				{
+					if(!changeLoadTimeWithFps)
+					{
+						SetFramerate();
+					}
 					gameState = state.RUNNING;
 				}
 				break;
@@ -307,35 +328,30 @@ function Draw()
 function ChooseLevel()
 {
 	currentLevel = level[document.getElementById("chosenLevel").value];
+	preMadeStateList = null;
 	switch(currentLevel)
 	{
 		case level.DOTD:
 			frames = 204;
 			comparisonInputs = dotdInputs.slice();
 			ejectFrame = 56;
-			dotdPreMadeStates = ["Shift to Z swap: 1", "Grab and Up release: 57", "Left and Ctrl press: 97", "Ctrl release: 150"];
-			dotdPreMadeStates.forEach((state) =>
-			{
-				let li = document.createElement("li");
-				li.textContent = state;
-				document.getElementById("preMadeSaveStates").appendChild(li);
-			});
+			preMadeStateList = ["Shift to Z swap: 1", "Grab and Up release: 57", "Left and Ctrl press: 97", "Ctrl release: 150"];
 			break;
 		case level.SMF:
 			frames = 343;
 			comparisonInputs = smfInputs.slice();
 			ejectFrame = 10;
-			smfPreMadeStates = ["First four: 1", "Grab: 14", "Left to Right swap: 100", "Ctrl press: 270"];
-			smfPreMadeStates.forEach((state) =>
-			{
-				let li = document.createElement("li");
-				li.textContent = state;
-				document.getElementById("preMadeSaveStates").appendChild(li);
-			});
+			preMadeStateList = ["First four: 1", "Start from jump: 6", "Grab: 14", "Left to Right swap: 100", "Ctrl press: 270"];
 			break;
 		default:
 			console.log('chosen level error');
 	}
+	preMadeStateList.forEach((state) =>
+	{
+		let li = document.createElement("li");
+		li.textContent = state;
+		document.getElementById("preMadeSaveStates").appendChild(li);
+	});
 	totalImages = keyboardImageAmount + frames;
 	document.getElementById("saveStateExplenation").textContent = `(The frame to start from. Minimum is 1 and maximum is ${frames}.)`
 	document.getElementById("levelSelect").remove();
@@ -527,9 +543,9 @@ function LoadSaveState()
 	}
 }
 
-function SetFramerate()
+function SetFramerate(inputFps)
 {
-	let newFps = parseInt(document.getElementById("framerate").value, 10);
+	let newFps = inputFps ?? parseInt(document.getElementById("framerate").value, 10);
 	if(Number.isInteger(newFps) && newFps > 0 && newFps <= 60)
 	{
 	fps = newFps;

@@ -16,14 +16,14 @@
 	</div>
 	<canvas class="noOutline"></canvas>
 	<div>
-		<p>Save state:</p>
+		<p>Savestate:</p>
 		<input type="text" class="noOutline" id="saveState">
 		<button onclick="LoadSaveState();"></button>
 		<p class="smallText hoverReveal">(?)</p>
 		<p class="smallText hidden" id="saveStateExplenation">(The frame to start from.)</p>
 	</div>
 	<details class="smallText">
-		<summary class="noOutline">Pre-made Save states</summary>
+		<summary class="noOutline">Pre-made Savestates</summary>
 		<ul id="preMadeSaveStates">
 		</ul>
 	</details>
@@ -52,6 +52,12 @@
 	<p class="smallText">Display input feedback</p>
 	<p class="smallText hoverReveal">(?)</p>
 	<p class="smallText hidden">Uncheck this to remove the input comparison on failed inputs.</p>
+	</div>
+	<div>
+	<input type="checkbox" id="changeLoadTimeWithFpsCheckbox">
+	<p class="smallText">Change load time with framerate</p>
+	<p class="smallText hoverReveal">(?)</p>
+	<p class="smallText hidden">Checking this will cause load times to slow down and speed up with the framerate.</p>
 	</div>
 	<fieldset>
 		<legend class="bigText">What is this?</legend>
