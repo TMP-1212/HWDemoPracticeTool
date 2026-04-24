@@ -575,6 +575,12 @@ function SetLoadTime()
 	}
 }
 
+function PassedWarningScreen()
+{
+	document.getElementById("flashWarning").remove();
+	document.getElementById("levelSelectButton").disabled = false;
+}
+
 function PreloadImages(imageFilePaths)
 {
 	let promises = [];

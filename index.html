@@ -4,14 +4,20 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
+	<div class="warningScreen" id="flashWarning" role="alertdialog" aria-label="Warning" tabindex="-1">
+		<p class="bigText"><strong>Warning</strong></p>
+		<p class="mediumText">This website contains flashing visuals that may trigger seizures in individuals with photosensitive epilepsy.</p>
+		<p class="mediumText">Do not continue if you, or anyone in view of your screen, have photosensitive epilepsy.</p>
+		<button type="button" onclick="PassedWarningScreen();" class="defaultSize mediumText">Continue.</button>
+	</div>
 	<div id="levelSelect">
 		<form class="levelSelectSize">
 			<p>Level:</p>
 			<select class="noOutline" id="chosenLevel">
-				<option class="bigText">DOTD</option>
-				<option class="bigText">SMF</option>
+				<option class="mediumText">DOTD</option>
+				<option class="mediumText">SMF</option>
 			</select>
-			<button type="button" onclick="ChooseLevel(); StartGame();"></button>
+			<button type="button" id="levelSelectButton" onclick="ChooseLevel(); StartGame();" disabled></button>
 		</form>
 	</div>
 	<canvas class="noOutline"></canvas>
@@ -66,18 +72,22 @@
 	<p class="smallText hidden">Checking this will cause the level to be hidden while the result screen is visible.</p>
 	</div>
 	<fieldset>
-		<legend class="bigText">What is this?</legend>
+		<legend class="mediumText">Warning</legend>
+		<p class="smallText">This website contains flashing visuals that may trigger seizures in individuals with photosensitive epilepsy. Do not use this website if you, or anyone in view of your screen, have photosensitive epilepsy.</p>
+	</fieldset>
+	<fieldset>
+		<legend class="mediumText">What is this?</legend>
 		<p class="smallText">This is a practice tool that simulates frame perfect strategies from certain levels in the Happy Wheels demo. The graphics are built from hundreds of screenshots of the levels being played in the flash demo of the real game. This tool allows for better practice through its added features that aren't available in the real game. These features include save states for retrying specific scenarios instantly, custom framerate for slowing down or speeding up the simulation, pausing on failed inputs to see exactly what frame the error occurred on, and input feedback to see what caused the error.</p>
 	</fieldset>
 	<fieldset>
-		<legend class="bigText">Resources</legend>
+		<legend class="mediumText">Resources</legend>
 		<p class="smallText">Play the official game here: <a href="https://totaljerkface.com/happy_wheels.tjf" target="_blank">totaljerkface.com/happy_wheels.tjf</a></p>
 		<p class="smallText">Button Launch demonstration: <a href="https://youtu.be/rIYXZWZQOKM" target="_blank">youtu.be/rIYXZWZQOKM</a></p>
 		<p class="smallText">SMF Skip demonstration: <a href="https://youtu.be/YCOMSjDhDiw" target="_blank">youtu.be/YCOMSjDhDiw</a></p>
 		<p class="smallText">For bugs/problems/feature requests/anything regarding this website, you can DM me on discord: @tmp1212</p>
 	</fieldset>
 	<fieldset>
-		<legend class="bigText">Disclaimer</legend>
+		<legend class="mediumText">Disclaimer</legend>
 		<p class="smallText">This is a fan-made practice tool of the game Happy Wheels. It is not affiliated with, endorsed by, or associated with Fancy Force, LLC in any way. All trademarks, copyrights, and intellectual property belong to their respective owners. This project is entirely non-commercial.</p>
 	</fieldset>
 	<script src='main.js'></script>
